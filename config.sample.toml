@@ -1,0 +1,16 @@
+[server]
+address = ":8082"
+read_timeout = "5s"
+write_timeout = "5s"
+
+[messenger.pinpoint]
+config = '''
+{
+    "app_id": "",
+    "access_key": "",
+    "secret_key": "",
+    "region": "",
+    "message_type": "",
+    "sender_id": ""
+}
+'''
