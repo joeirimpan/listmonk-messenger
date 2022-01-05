@@ -1,3 +1,4 @@
 config.toml
 payload.json
 *.bin
+dist/
