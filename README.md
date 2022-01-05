@@ -17,7 +17,7 @@ make build
 
 Run the binary which starts a server on :8082
 ```
-./listmonk-messenger.bin --config config.toml --messenger pinpoint
+./listmonk-messenger.bin --config config.toml --msgr pinpoint
 ```
 
 * Setting up webhooks
