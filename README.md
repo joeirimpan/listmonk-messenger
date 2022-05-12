@@ -1,3 +1,4 @@
+<a href="https://zerodha.tech"><img src="https://zerodha.tech/static/images/github-badge.svg" align="right" /></a>
 ## listmonk-messenger
 
 Lightweight HTTP server to handle webhooks from [listmonk](https://listmonk.app) and forward it to different messengers.
