@@ -14,3 +14,12 @@ config = '''
     "sender_id": ""
 }
 '''
+
+[messenger.ses]
+config = '''
+{
+    "access_key": "",
+    "secret_key": "",
+    "region": "",
+}
+'''

@@ -7,6 +7,7 @@ require (
 	github.com/go-chi/chi v1.5.4
 	github.com/knadh/koanf v1.4.0
 	github.com/knadh/listmonk v1.1.0
+	github.com/knadh/smtppool v0.4.0
 	github.com/spf13/pflag v1.0.5
 )
 

@@ -86,6 +86,8 @@ github.com/knadh/koanf v1.4.0/go.mod h1:1cfH5223ZeZUOs8FU2UdTmaNfHpqgtjV0+NHjRO4
 github.com/knadh/listmonk v1.1.0 h1:X5qIOKuyC3OxfKGf82C1yTIMHwsjWxvf1gzn2ulbXOo=
 github.com/knadh/listmonk v1.1.0/go.mod h1:XlnRvP4GDUZXZNq0+Yl8SqComqpZ9VoS3ZAzdakaiHs=
 github.com/knadh/smtppool v0.2.1/go.mod h1:3DJHouXAgPDBz0kC50HukOsdapYSwIEfJGwuip46oCA=
+github.com/knadh/smtppool v0.4.0 h1:335iXPwZ6katJVhauV4O6e8uPvvPmO6YLrfDQhb6UvE=
+github.com/knadh/smtppool v0.4.0/go.mod h1:3DJHouXAgPDBz0kC50HukOsdapYSwIEfJGwuip46oCA=
 github.com/knadh/stuffbin v1.1.0/go.mod h1:yVCFaWaKPubSNibBsTAJ939q2ABHudJQxRWZWV5yh+4=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
