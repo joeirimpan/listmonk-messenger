@@ -108,17 +108,18 @@ func handlePostback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(data.Attachments) > 0 {
-		a := make([]messenger.Attachment, 0, len(data.Attachments))
-		for i := 0; i < len(data.Attachments); i++ {
-			a[i] = messenger.Attachment{
-				Name:    data.Attachments[i].Name,
-				Header:  data.Attachments[i].Header,
-				Content: make([]byte, len(data.Attachments[i].Content)),
+		files := make([]messenger.Attachment, 0, len(data.Attachments))
+		for _, f := range data.Attachments {
+			a := messenger.Attachment{
+				Name:    f.Name,
+				Header:  f.Header,
+				Content: make([]byte, len(f.Content)),
 			}
-			copy(a[i].Content, data.Attachments[i].Content)
+			copy(a.Content, f.Content)
+			files = append(files, a)
 		}
 
-		message.Attachments = a
+		message.Attachments = files
 	}
 
 	app.logger.DebugWith("sending message").String("provider", provider).String("message", fmt.Sprintf("%#+v", message)).Write()

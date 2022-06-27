@@ -6,6 +6,7 @@ Lightweight HTTP server to handle webhooks from [listmonk](https://listmonk.app)
 ### Supported messengers
 
 * Pinpoint
+* AWS SES
 
 ### Development
 
@@ -18,7 +19,7 @@ make build
 
 Run the binary which starts a server on :8082
 ```
-./listmonk-messenger.bin --config config.toml --msgr pinpoint
+./listmonk-messenger.bin --config config.toml --msgr pinpoint --msgr ses
 ```
 
 * Setting up webhooks

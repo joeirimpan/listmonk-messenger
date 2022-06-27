@@ -41,13 +41,14 @@ func (s sesMessenger) Push(msg Message) error {
 	var files []smtppool.Attachment
 	if msg.Attachments != nil {
 		files = make([]smtppool.Attachment, 0, len(msg.Attachments))
-		for i := 0; i < len(msg.Attachments); i++ {
-			files[i] = smtppool.Attachment{
-				Filename: msg.Attachments[i].Name,
-				Header:   msg.Attachments[i].Header,
-				Content:  make([]byte, len(msg.Attachments[i].Content)),
+		for _, f := range msg.Attachments {
+			a := smtppool.Attachment{
+				Filename: f.Name,
+				Header:   f.Header,
+				Content:  make([]byte, len(f.Content)),
 			}
-			copy(files[i].Content, msg.Attachments[i].Content)
+			copy(a.Content, f.Content)
+			files = append(files, a)
 		}
 	}
 
