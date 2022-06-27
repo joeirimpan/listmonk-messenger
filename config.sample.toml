@@ -1,3 +1,5 @@
+log_level="info"
+
 [server]
 address = ":8082"
 read_timeout = "5s"
@@ -12,5 +14,14 @@ config = '''
     "region": "",
     "message_type": "",
     "sender_id": ""
+}
+'''
+
+[messenger.ses]
+config = '''
+{
+    "access_key": "",
+    "secret_key": "",
+    "region": "",
 }
 '''

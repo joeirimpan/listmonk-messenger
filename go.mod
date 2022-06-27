@@ -4,13 +4,16 @@ go 1.17
 
 require (
 	github.com/aws/aws-sdk-go v1.42.26
+	github.com/francoispqt/onelog v0.0.0-20190306043706-8c2bb31b10a4
 	github.com/go-chi/chi v1.5.4
 	github.com/knadh/koanf v1.4.0
 	github.com/knadh/listmonk v1.1.0
+	github.com/knadh/smtppool v0.4.0
 	github.com/spf13/pflag v1.0.5
 )
 
 require (
+	github.com/francoispqt/gojay v1.2.13 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/jmoiron/sqlx v1.2.0 // indirect

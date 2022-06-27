@@ -3,8 +3,10 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/textproto"
 
 	"github.com/go-chi/chi"
 	"github.com/joeirimpan/listmonk-messenger/messenger"
@@ -12,25 +14,33 @@ import (
 )
 
 type postback struct {
-	Subject     string      `json:"subject"`
-	ContentType string      `json:"content_type"`
-	Body        string      `json:"body"`
-	Recipients  []recipient `json:"recipients"`
-	Campaign    *campaign   `json:"campaign"`
+	Subject     string       `json:"subject"`
+	ContentType string       `json:"content_type"`
+	Body        string       `json:"body"`
+	Recipients  []recipient  `json:"recipients"`
+	Campaign    *campaign    `json:"campaign"`
+	Attachments []attachment `json:"attachments"`
 }
 
 type campaign struct {
-	UUID string   `db:"uuid" json:"uuid"`
-	Name string   `db:"name" json:"name"`
-	Tags []string `db:"tags" json:"tags"`
+	FromEmail string   `json:"from_email"`
+	UUID      string   `json:"uuid"`
+	Name      string   `json:"name"`
+	Tags      []string `json:"tags"`
 }
 
 type recipient struct {
-	UUID    string                   `db:"uuid" json:"uuid"`
-	Email   string                   `db:"email" json:"email"`
-	Name    string                   `db:"name" json:"name"`
-	Attribs models.SubscriberAttribs `db:"attribs" json:"attribs"`
-	Status  string                   `db:"status" json:"status"`
+	UUID    string                   `json:"uuid"`
+	Email   string                   `json:"email"`
+	Name    string                   `json:"name"`
+	Attribs models.SubscriberAttribs `json:"attribs"`
+	Status  string                   `json:"status"`
+}
+
+type attachment struct {
+	Name    string               `json:"name"`
+	Header  textproto.MIMEHeader `json:"header"`
+	Content []byte               `json:"content"`
 }
 
 type httpResp struct {
@@ -49,6 +59,7 @@ func handlePostback(w http.ResponseWriter, r *http.Request) {
 	// Decode body
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		app.logger.ErrorWith("error reading request body").Err("err", err).Write()
 		sendErrorResponse(w, "invalid body", http.StatusBadRequest, nil)
 		return
 	}
@@ -56,6 +67,7 @@ func handlePostback(w http.ResponseWriter, r *http.Request) {
 
 	data := &postback{}
 	if err := json.Unmarshal(body, &data); err != nil {
+		app.logger.ErrorWith("error unmarshalling request body").Err("err", err).Write()
 		sendErrorResponse(w, "invalid body", http.StatusBadRequest, nil)
 		return
 	}
@@ -88,19 +100,38 @@ func handlePostback(w http.ResponseWriter, r *http.Request) {
 
 	if data.Campaign != nil {
 		message.Campaign = &models.Campaign{
-			UUID: data.Campaign.UUID,
-			Name: data.Campaign.Name,
-			Tags: data.Campaign.Tags,
+			FromEmail: data.Campaign.FromEmail,
+			UUID:      data.Campaign.UUID,
+			Name:      data.Campaign.Name,
+			Tags:      data.Campaign.Tags,
 		}
 	}
 
+	if len(data.Attachments) > 0 {
+		a := make([]messenger.Attachment, 0, len(data.Attachments))
+		for i := 0; i < len(data.Attachments); i++ {
+			a[i] = messenger.Attachment{
+				Name:    data.Attachments[i].Name,
+				Header:  data.Attachments[i].Header,
+				Content: make([]byte, len(data.Attachments[i].Content)),
+			}
+			copy(a[i].Content, data.Attachments[i].Content)
+		}
+
+		message.Attachments = a
+	}
+
+	app.logger.DebugWith("sending message").String("provider", provider).String("message", fmt.Sprintf("%#+v", message)).Write()
+
 	// Send message.
 	if err := p.Push(message); err != nil {
+		app.logger.ErrorWith("error sending message").Err("err", err).Write()
 		sendErrorResponse(w, "error sending message", http.StatusInternalServerError, nil)
 		return
 	}
 
 	sendResponse(w, "OK")
+	return
 }
 
 // wrap is a middleware that wraps HTTP handlers and injects the "app" context.
