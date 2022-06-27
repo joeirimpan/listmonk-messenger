@@ -103,8 +103,13 @@ func loadMessengers(msgrs []string, app *App) {
 }
 
 func main() {
+	logLevels := onelog.INFO | onelog.WARN | onelog.ERROR | onelog.FATAL
+	if ko.String("log_level") == "debug" {
+		logLevels |= onelog.DEBUG
+	}
+
 	// setup logger
-	l := onelog.NewContext(os.Stderr, onelog.INFO|onelog.WARN|onelog.ERROR|onelog.FATAL, "p")
+	l := onelog.NewContext(os.Stderr, logLevels, "p")
 	l.Hook(func(e onelog.Entry) {
 		e.String("ts", time.Now().Format(time.RFC3339Nano))
 		e.String("line", l.Caller(5))

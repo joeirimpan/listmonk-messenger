@@ -121,7 +121,7 @@ func handlePostback(w http.ResponseWriter, r *http.Request) {
 		message.Attachments = a
 	}
 
-	app.logger.ErrorWith("sending message").String("provider", provider).String("message", fmt.Sprintf("%#+v", message)).Write()
+	app.logger.DebugWith("sending message").String("provider", provider).String("message", fmt.Sprintf("%#+v", message)).Write()
 
 	// Send message.
 	if err := p.Push(message); err != nil {
