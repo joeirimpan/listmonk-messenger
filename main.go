@@ -5,7 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
+	"github.com/francoispqt/onelog"
 	"github.com/go-chi/chi"
 	"github.com/joeirimpan/listmonk-messenger/messenger"
 	"github.com/knadh/koanf"
@@ -28,6 +30,8 @@ type MessengerCfg struct {
 }
 
 type App struct {
+	logger *onelog.Logger
+
 	messengers map[string]messenger.Messenger
 }
 
@@ -82,7 +86,9 @@ func loadMessengers(msgrs []string, app *App) {
 		)
 		switch m {
 		case "pinpoint":
-			msgr, err = messenger.NewPinpoint([]byte(cfg.Config))
+			msgr, err = messenger.NewPinpoint([]byte(cfg.Config), app.logger)
+		case "ses":
+			msgr, err = messenger.NewAWSSES([]byte(cfg.Config), app.logger)
 		default:
 			log.Fatalf("invalid provider: %s", m)
 		}
@@ -97,8 +103,15 @@ func loadMessengers(msgrs []string, app *App) {
 }
 
 func main() {
+	// setup logger
+	l := onelog.NewContext(os.Stderr, onelog.INFO|onelog.WARN|onelog.ERROR|onelog.FATAL, "p")
+	l.Hook(func(e onelog.Entry) {
+		e.String("ts", time.Now().Format(time.RFC3339Nano))
+		e.String("line", l.Caller(5))
+	})
+
 	// load messengers
-	app := &App{}
+	app := &App{logger: l}
 
 	loadMessengers(ko.Strings("msgr"), app)
 

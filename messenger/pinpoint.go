@@ -3,12 +3,12 @@ package messenger
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/pinpoint"
+	"github.com/francoispqt/onelog"
 )
 
 var (
@@ -28,6 +28,8 @@ type pinpointCfg struct {
 type pinpointMessenger struct {
 	cfg    pinpointCfg
 	client *pinpoint.Pinpoint
+
+	logger *onelog.Logger
 }
 
 func (p pinpointMessenger) Name() string {
@@ -67,7 +69,7 @@ func (p pinpointMessenger) Push(msg Message) error {
 
 	if p.cfg.Log {
 		for phone, result := range out.MessageResponse.Result {
-			log.Printf("successfully sent sms to %s: %#+v", phone, result)
+			p.logger.InfoWith("successfully sent sms").String("phone", phone).String("result", fmt.Sprintf("%#+v", result)).Write()
 		}
 	}
 
@@ -83,7 +85,7 @@ func (p pinpointMessenger) Close() error {
 }
 
 // NewPinpoint creates new instance of pinpoint
-func NewPinpoint(cfg []byte) (Messenger, error) {
+func NewPinpoint(cfg []byte, l *onelog.Logger) (Messenger, error) {
 	var c pinpointCfg
 	if err := json.Unmarshal(cfg, &c); err != nil {
 		return nil, err
@@ -112,5 +114,6 @@ func NewPinpoint(cfg []byte) (Messenger, error) {
 	return pinpointMessenger{
 		client: svc,
 		cfg:    c,
+		logger: l,
 	}, nil
 }

@@ -3,12 +3,12 @@ package messenger
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ses"
+	"github.com/francoispqt/onelog"
 	"github.com/knadh/smtppool"
 )
 
@@ -27,6 +27,8 @@ type sesCfg struct {
 type sesMessenger struct {
 	cfg    sesCfg
 	client *ses.SES
+
+	logger *onelog.Logger
 }
 
 func (s sesMessenger) Name() string {
@@ -36,22 +38,25 @@ func (s sesMessenger) Name() string {
 // Push sends the sms through pinpoint API.
 func (s sesMessenger) Push(msg Message) error {
 	// convert attachments to smtppool.Attachments
-	a := make([]smtppool.Attachment, 0, len(msg.Attachments))
-	for i := 0; i < len(msg.Attachments); i++ {
-		a[i] = smtppool.Attachment{
-			Filename: msg.Attachments[i].Name,
-			Header:   msg.Attachments[i].Header,
-			Content:  msg.Attachments[i].Content,
+	var files []smtppool.Attachment
+	if msg.Attachments != nil {
+		files = make([]smtppool.Attachment, 0, len(msg.Attachments))
+		for i := 0; i < len(msg.Attachments); i++ {
+			files[i] = smtppool.Attachment{
+				Filename: msg.Attachments[i].Name,
+				Header:   msg.Attachments[i].Header,
+				Content:  make([]byte, len(msg.Attachments[i].Content)),
+			}
+			copy(files[i].Content, msg.Attachments[i].Content)
 		}
 	}
 
 	email := smtppool.Email{
-		From:        msg.From,
-		To:          msg.To,
+		From:        msg.Campaign.FromEmail,
 		Subject:     msg.Subject,
 		Sender:      msg.From,
 		Headers:     msg.Headers,
-		Attachments: a,
+		Attachments: files,
 	}
 
 	switch {
@@ -66,14 +71,9 @@ func (s sesMessenger) Push(msg Message) error {
 		return err
 	}
 
-	to := make([]*string, 0, len(msg.To))
-	for i := 0; i < len(msg.To); i++ {
-		to = append(to, &msg.To[i])
-	}
-
 	input := &ses.SendRawEmailInput{
-		Source:       &msg.From,
-		Destinations: to,
+		Source:       &email.From,
+		Destinations: []*string{&msg.Subscriber.Email},
 		RawMessage: &ses.RawMessage{
 			Data: emailB,
 		},
@@ -85,7 +85,7 @@ func (s sesMessenger) Push(msg Message) error {
 	}
 
 	if s.cfg.Log {
-		log.Printf("successfully sent email to %s: %#+v", msg.Subscriber.Email, out)
+		s.logger.InfoWith("successfully sent email").String("email", msg.Subscriber.Email).String("results", fmt.Sprintf("%#+v", out)).Write()
 	}
 
 	return nil
@@ -100,7 +100,7 @@ func (s sesMessenger) Close() error {
 }
 
 // NewAWSSES creates new instance of pinpoint
-func NewAWSSES(cfg []byte) (Messenger, error) {
+func NewAWSSES(cfg []byte, l *onelog.Logger) (Messenger, error) {
 	var c sesCfg
 	if err := json.Unmarshal(cfg, &c); err != nil {
 		return nil, err
@@ -126,5 +126,6 @@ func NewAWSSES(cfg []byte) (Messenger, error) {
 	return sesMessenger{
 		client: svc,
 		cfg:    c,
+		logger: l,
 	}, nil
 }
