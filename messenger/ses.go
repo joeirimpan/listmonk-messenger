@@ -62,7 +62,7 @@ func (s sesMessenger) Push(msg Message) error {
 	switch {
 	case msg.ContentType == ContentTypePlain:
 		email.Text = msg.Body
-	case msg.ContentType == ContentTypeHTML:
+	default:
 		email.HTML = msg.Body
 	}
 
