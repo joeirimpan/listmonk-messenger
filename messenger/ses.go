@@ -54,6 +54,7 @@ func (s sesMessenger) Push(msg Message) error {
 
 	email := smtppool.Email{
 		From:        msg.Campaign.FromEmail,
+		To:          []string{msg.Subscriber.Email},
 		Subject:     msg.Subject,
 		Sender:      msg.From,
 		Headers:     msg.Headers,
