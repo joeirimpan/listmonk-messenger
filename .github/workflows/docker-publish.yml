@@ -9,7 +9,7 @@ on:
       - '*'
 #
 jobs:
-    imagemagick-libvips-golang-docker:
+    listmonk-messenger-docker:
       runs-on: ubuntu-latest
       permissions:
         contents: read
