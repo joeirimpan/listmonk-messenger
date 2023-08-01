@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --from=builder /app/listmonk-messenger.bin .
 
 # Copy the config.toml file (adjust the path if necessary)
-COPY config.toml .
+#COPY config.toml .
 
 # Expose the port that the application listens on (adjust if necessary)
 EXPOSE 8082
