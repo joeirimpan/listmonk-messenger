@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/aws/aws-sdk-go v1.44.314
 	github.com/francoispqt/onelog v0.0.0-20190306043706-8c2bb31b10a4
-	github.com/go-chi/chi v1.5.4
+	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/knadh/koanf v1.5.0
 	github.com/knadh/listmonk v1.1.0
 	github.com/knadh/smtppool v1.0.2
