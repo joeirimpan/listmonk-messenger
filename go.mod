@@ -3,7 +3,7 @@ module github.com/joeirimpan/listmonk-messenger
 go 1.17
 
 require (
-	github.com/aws/aws-sdk-go v1.42.26
+	github.com/aws/aws-sdk-go v1.44.314
 	github.com/francoispqt/onelog v0.0.0-20190306043706-8c2bb31b10a4
 	github.com/go-chi/chi v1.5.4
 	github.com/knadh/koanf v1.5.0
@@ -22,7 +22,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
-	github.com/yuin/goldmark v1.3.5 // indirect
-	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
+	github.com/yuin/goldmark v1.4.13 // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	gopkg.in/volatiletech/null.v6 v6.0.0-20170828023728-0bef4e07ae1b // indirect
 )
