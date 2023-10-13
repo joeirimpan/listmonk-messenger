@@ -89,6 +89,8 @@ func loadMessengers(msgrs []string, app *App) {
 			msgr, err = messenger.NewPinpoint([]byte(cfg.Config), app.logger)
 		case "ses":
 			msgr, err = messenger.NewAWSSES([]byte(cfg.Config), app.logger)
+		case "twilio":
+			msgr, err = messenger.NewTwilio([]byte(cfg.Config), app.logger)
 		default:
 			log.Fatalf("invalid provider: %s", m)
 		}
