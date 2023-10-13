@@ -72,7 +72,7 @@ func (t twilioMessenger) Close() error {
 	return nil
 }
 
-// NewPinpoint creates new instance of pinpoint
+// NewTwilio creates new instance of twilio
 func NewTwilio(cfg []byte, l *onelog.Logger) (Messenger, error) {
 	var c twilioCfg
 	if err := json.Unmarshal(cfg, &c); err != nil {
