@@ -25,3 +25,12 @@ config = '''
     "region": ""
 }
 '''
+[messenger.twilio]
+config = '''
+{
+    "account_id": "",
+    "auth_token": "",
+    "sender_id": "",
+    "upload_path": "",
+}
+'''
