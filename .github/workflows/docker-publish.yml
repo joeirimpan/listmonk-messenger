@@ -58,7 +58,7 @@ jobs:
             echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
         # Set up Buildx env
         - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v2
+          uses: docker/setup-buildx-action@v3
   
         # Login
         - name: Login to GitHub Container Registry
