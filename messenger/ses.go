@@ -102,13 +102,13 @@ func (s sesMessenger) Close() error {
 	return nil
 }
 
-func checkCredentials(sess *session.Session) bool {
+func checkCredentials(sess *session.Session) error {
 	// Create a SES service client.
 	svc := sts.New(sess)
 	// Call the GetCallerIdentity API to check credentials
 	params := &sts.GetCallerIdentityInput{}
 	_, err := svc.GetCallerIdentity(params)
-	return err != nil
+	return err
 }
 
 // NewAWSSES creates new instance of pinpoint
@@ -129,8 +129,9 @@ func NewAWSSES(cfg []byte, l *onelog.Logger) (Messenger, error) {
 	}
 
 	var sess = session.Must(session.NewSession(config))
-	if !checkCredentials(sess) {
-		return nil, fmt.Errorf("invalid credentials")
+	err := checkCredentials(sess)
+	if err != nil {
+		return nil, err
 	}
 
 	svc := ses.New(sess)

@@ -106,8 +106,9 @@ func NewPinpoint(cfg []byte, l *onelog.Logger) (Messenger, error) {
 	}
 
 	var sess = session.Must(session.NewSession(config))
-	if !checkCredentials(sess) {
-		return nil, fmt.Errorf("invalid credentials")
+	err := checkCredentials(sess)
+	if err != nil {
+		return nil, err
 	}
 	svc := pinpoint.New(sess)
 
