@@ -1,5 +1,10 @@
 # Use an official Golang runtime as the base image
-FROM golang:1.18 as builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.18 as builder
+
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
 
 # Set the working directory in the container
 WORKDIR /app
@@ -7,14 +12,11 @@ WORKDIR /app
 # Copy the source code to the container
 COPY . .
 
-ARG TARGETOS
-ARG TARGETARCH
-
 # Build the application
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} make build
 
 # Use a lightweight Alpine image as the base image for the final container
-FROM alpine:latest
+FROM --platform=${TARGETPLATFORM:-linux/amd64} alpine:latest
 
 # Set the working directory in the container
 WORKDIR /app
