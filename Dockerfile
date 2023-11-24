@@ -7,8 +7,11 @@ WORKDIR /app
 # Copy the source code to the container
 COPY . .
 
+ARG TARGETOS
+ARG TARGETARCH
+
 # Build the application
-RUN make build
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} make build
 
 # Use a lightweight Alpine image as the base image for the final container
 FROM alpine:latest
