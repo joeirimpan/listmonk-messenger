@@ -3,13 +3,14 @@ module github.com/joeirimpan/listmonk-messenger
 go 1.18
 
 require (
-	github.com/aws/aws-sdk-go v1.45.24
+	github.com/aws/aws-sdk-go v1.48.11
 	github.com/francoispqt/onelog v0.0.0-20190306043706-8c2bb31b10a4
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/knadh/koanf v1.5.0
 	github.com/knadh/listmonk v1.1.0
 	github.com/knadh/smtppool v1.0.2
 	github.com/spf13/pflag v1.0.5
+	github.com/twilio/twilio-go v1.14.1
 )
 
 require (
@@ -24,7 +25,6 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/twilio/twilio-go v1.14.1 // indirect
 	github.com/yuin/goldmark v1.4.13 // indirect
 	golang.org/x/sys v0.1.0 // indirect
 	gopkg.in/volatiletech/null.v6 v6.0.0-20170828023728-0bef4e07ae1b // indirect
