@@ -15,6 +15,7 @@ import (
 
 type postback struct {
 	Subject     string       `json:"subject"`
+	FromEmail   string       `json:"from_email"`
 	ContentType string       `json:"content_type"`
 	Body        string       `json:"body"`
 	Recipients  []recipient  `json:"recipients"`
@@ -86,6 +87,7 @@ func handlePostback(w http.ResponseWriter, r *http.Request) {
 
 	rec := data.Recipients[0]
 	message := messenger.Message{
+		From:        data.FromEmail,
 		Subject:     data.Subject,
 		ContentType: data.ContentType,
 		Body:        []byte(data.Body),
