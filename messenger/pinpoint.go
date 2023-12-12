@@ -94,22 +94,23 @@ func NewPinpoint(cfg []byte, l *onelog.Logger) (Messenger, error) {
 	if c.AppID == "" {
 		return nil, fmt.Errorf("invalid app_id")
 	}
-	if c.Region == "" {
-		return nil, fmt.Errorf("invalid region")
+
+	config := &aws.Config{
+		MaxRetries: aws.Int(3),
 	}
-	if c.AccessKey == "" {
-		return nil, fmt.Errorf("invalid access_key")
+	if c.AccessKey != "" && c.SecretKey != "" {
+		config.Credentials = credentials.NewStaticCredentials(c.AccessKey, c.SecretKey, "")
 	}
-	if c.SecretKey == "" {
-		return nil, fmt.Errorf("invalid secret_key")
+	if c.Region != "" {
+		config.Region = &c.Region
 	}
 
-	sess := session.Must(session.NewSession())
-	svc := pinpoint.New(sess,
-		aws.NewConfig().
-			WithCredentials(credentials.NewStaticCredentials(c.AccessKey, c.SecretKey, "")).
-			WithRegion(c.Region),
-	)
+	var sess = session.Must(session.NewSession(config))
+	err := checkCredentials(sess)
+	if err != nil {
+		return nil, err
+	}
+	svc := pinpoint.New(sess)
 
 	return pinpointMessenger{
 		client: svc,
