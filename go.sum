@@ -205,8 +205,8 @@ github.com/knadh/koanf v1.5.0/go.mod h1:Hgyjp4y8v44hpZtPzs7JZfRAW5AhN7KfZcwv1RYg
 github.com/knadh/listmonk v1.1.0 h1:X5qIOKuyC3OxfKGf82C1yTIMHwsjWxvf1gzn2ulbXOo=
 github.com/knadh/listmonk v1.1.0/go.mod h1:XlnRvP4GDUZXZNq0+Yl8SqComqpZ9VoS3ZAzdakaiHs=
 github.com/knadh/smtppool v0.2.1/go.mod h1:3DJHouXAgPDBz0kC50HukOsdapYSwIEfJGwuip46oCA=
-github.com/knadh/smtppool v1.0.2 h1:qg2A2DYqrfeCxxAonVaL9xruhIP+e7xhq+TImyiLajQ=
-github.com/knadh/smtppool v1.0.2/go.mod h1:3DJHouXAgPDBz0kC50HukOsdapYSwIEfJGwuip46oCA=
+github.com/knadh/smtppool v1.1.0 h1:J7RB3PpNQW/STnJ6JXlNZLfuNsgJu2VILV+CHWnc/j8=
+github.com/knadh/smtppool v1.1.0/go.mod h1:3DJHouXAgPDBz0kC50HukOsdapYSwIEfJGwuip46oCA=
 github.com/knadh/stuffbin v1.1.0/go.mod h1:yVCFaWaKPubSNibBsTAJ939q2ABHudJQxRWZWV5yh+4=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
 github.com/konsorten/go-windows-terminal-sequences v1.0.3/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
