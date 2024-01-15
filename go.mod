@@ -10,7 +10,7 @@ require (
 	github.com/knadh/listmonk v1.1.0
 	github.com/knadh/smtppool v1.0.2
 	github.com/spf13/pflag v1.0.5
-	github.com/twilio/twilio-go v1.16.0
+	github.com/twilio/twilio-go v1.16.1
 )
 
 require (
