@@ -8,7 +8,7 @@ require (
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/knadh/koanf v1.5.0
 	github.com/knadh/listmonk v1.1.0
-	github.com/knadh/smtppool v1.0.2
+	github.com/knadh/smtppool v1.1.0
 	github.com/spf13/pflag v1.0.5
 	github.com/twilio/twilio-go v1.16.1
 )
