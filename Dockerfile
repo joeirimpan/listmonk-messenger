@@ -1,5 +1,5 @@
 # Use an official Golang runtime as the base image
-FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.18 as builder
+FROM --platform=${BUILDPLATFORM:-linux/amd64} golang:1.19 as builder
 
 ARG TARGETOS
 ARG TARGETARCH
