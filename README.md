@@ -7,9 +7,9 @@ Lightweight HTTP server to handle webhooks from [listmonk](https://listmonk.app)
 ### Supported messengers
 
 - Pinpoint
-- AWS SES\*
+- Twilio
+- AWS SES - Use `listmonk >= v2.2.0`
 
-(\*) Please note: Due to a recent change in code, you need to use the master branch of [listmonk](https://listmonk.app) in order to send messages with AWS SES.
 
 ### Development
 
