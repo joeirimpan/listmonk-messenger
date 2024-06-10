@@ -3,7 +3,7 @@ module github.com/joeirimpan/listmonk-messenger
 go 1.21
 
 require (
-	github.com/aws/aws-sdk-go v1.51.25
+	github.com/aws/aws-sdk-go v1.53.19
 	github.com/francoispqt/onelog v0.0.0-20190306043706-8c2bb31b10a4
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/knadh/koanf v1.5.0
