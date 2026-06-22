@@ -4,9 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/pinpoint"
 	"github.com/francoispqt/onelog"
 )
@@ -16,10 +13,8 @@ var (
 )
 
 type pinpointCfg struct {
+	awsCfg
 	AppID       string `json:"app_id"`
-	AccessKey   string `json:"access_key"`
-	SecretKey   string `json:"secret_key"`
-	Region      string `json:"region"`
 	MessageType string `json:"message_type"`
 	SenderID    string `json:"sender_id"`
 	Log         bool   `json:"log"`
@@ -95,19 +90,11 @@ func NewPinpoint(cfg []byte, l *onelog.Logger) (Messenger, error) {
 		return nil, fmt.Errorf("invalid app_id")
 	}
 
-	config := &aws.Config{
-		MaxRetries: aws.Int(3),
-	}
-	if c.AccessKey != "" && c.SecretKey != "" {
-		config.Credentials = credentials.NewStaticCredentials(c.AccessKey, c.SecretKey, "")
-	}
-	if c.Region != "" {
-		config.Region = &c.Region
-	}
-
-	var sess = session.Must(session.NewSession(config))
-	err := checkCredentials(sess)
+	sess, err := newAWSSession(c.awsCfg)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkCredentials(sess); err != nil {
 		return nil, err
 	}
 	svc := pinpoint.New(sess)

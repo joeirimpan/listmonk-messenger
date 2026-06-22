@@ -1,0 +1,17 @@
+# LocalStack mock AWS for integration tests.
+#   docker compose -f docker-compose.test.yml up -d
+#   go test -tags=integration ./messenger/...
+#   docker compose -f docker-compose.test.yml down
+services:
+  localstack:
+    image: localstack/localstack:3
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sts,iam,ses,pinpoint
+      - DEBUG=0
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 12

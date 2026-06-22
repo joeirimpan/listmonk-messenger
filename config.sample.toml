@@ -12,6 +12,9 @@ config = '''
     "access_key": "",
     "secret_key": "",
     "region": "",
+    "role_arn": "",
+    "external_id": "",
+    "role_session_name": "",
     "message_type": "",
     "sender_id": ""
 }
@@ -22,7 +25,10 @@ config = '''
 {
     "access_key": "",
     "secret_key": "",
-    "region": ""
+    "region": "",
+    "role_arn": "",
+    "external_id": "",
+    "role_session_name": ""
 }
 '''
 [messenger.twilio]
