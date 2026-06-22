@@ -60,6 +60,11 @@ make test-integration  # spins up a LocalStack mock AWS via docker and runs the 
 tears it down afterwards. To run the tests against an already-running mock, set
 `LOCALSTACK_ENDPOINT` and invoke `go test -tags=integration ./...` directly.
 
+### Health check
+
+`GET /health` returns `200 OK` and can be used as a liveness/readiness probe for
+monitoring.
+
 - Setting up webhooks
   ![](/screenshots/listmonk-setting-up-webhook.png)
 
