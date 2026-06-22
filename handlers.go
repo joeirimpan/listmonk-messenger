@@ -137,6 +137,11 @@ func handlePostback(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// handleHealthCheck responds with a 200 for monitoring/liveness probes.
+func handleHealthCheck(w http.ResponseWriter, r *http.Request) {
+	sendResponse(w, "OK")
+}
+
 // wrap is a middleware that wraps HTTP handlers and injects the "app" context.
 func wrap(app *App, next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

@@ -4,11 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ses"
-	"github.com/aws/aws-sdk-go/service/sts"
 	"github.com/francoispqt/onelog"
 	"github.com/knadh/smtppool"
 )
@@ -19,10 +15,8 @@ const (
 )
 
 type sesCfg struct {
-	AccessKey string `json:"access_key"`
-	SecretKey string `json:"secret_key"`
-	Region    string `json:"region"`
-	Log       bool   `json:"log"`
+	awsCfg
+	Log bool `json:"log"`
 }
 
 type sesMessenger struct {
@@ -107,15 +101,6 @@ func (s sesMessenger) Close() error {
 	return nil
 }
 
-func checkCredentials(sess *session.Session) error {
-	// Create a SES service client.
-	svc := sts.New(sess)
-	// Call the GetCallerIdentity API to check credentials
-	params := &sts.GetCallerIdentityInput{}
-	_, err := svc.GetCallerIdentity(params)
-	return err
-}
-
 // NewAWSSES creates new instance of pinpoint
 func NewAWSSES(cfg []byte, l *onelog.Logger) (Messenger, error) {
 	var c sesCfg
@@ -123,19 +108,11 @@ func NewAWSSES(cfg []byte, l *onelog.Logger) (Messenger, error) {
 		return nil, err
 	}
 
-	config := &aws.Config{
-		MaxRetries: aws.Int(3),
-	}
-	if c.AccessKey != "" && c.SecretKey != "" {
-		config.Credentials = credentials.NewStaticCredentials(c.AccessKey, c.SecretKey, "")
-	}
-	if c.Region != "" {
-		config.Region = &c.Region
-	}
-
-	var sess = session.Must(session.NewSession(config))
-	err := checkCredentials(sess)
+	sess, err := newAWSSession(c.awsCfg)
 	if err != nil {
+		return nil, err
+	}
+	if err := checkCredentials(sess); err != nil {
 		return nil, err
 	}
 

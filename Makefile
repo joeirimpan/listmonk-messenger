@@ -13,4 +13,16 @@ run: build
 	@./${BIN}
 .PHONY: run
 
+test:
+	go test ./...
+.PHONY: test
+
+# Run integration tests against a LocalStack mock AWS.
+COMPOSE := docker compose -f docker-compose.test.yml
+test-integration:
+	$(COMPOSE) up -d --wait
+	go test -count=1 -v -tags=integration ./...; status=$$?; \
+		$(COMPOSE) down; exit $$status
+.PHONY: test-integration
+
 .DEFAULT_GOAL := build

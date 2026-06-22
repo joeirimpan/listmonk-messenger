@@ -123,6 +123,7 @@ func main() {
 	loadMessengers(ko.Strings("msgr"), app)
 
 	r := chi.NewRouter()
+	r.Get("/health", handleHealthCheck)
 	r.Post("/webhook/{provider}", wrap(app, handlePostback))
 
 	// HTTP Server.
