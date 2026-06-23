@@ -52,13 +52,13 @@ The `ses` and `pinpoint` messengers can authenticate to AWS in two ways:
 
 ```
 make test              # unit tests
-make test-integration  # spins up a LocalStack mock AWS via docker and runs the integration tests
+make test-integration  # spins up a fakecloud mock AWS via docker and runs the integration tests
 ```
 
-`make test-integration` requires Docker. It brings up LocalStack (defined in
+`make test-integration` requires Docker. It brings up fakecloud (defined in
 `docker-compose.test.yml`), runs the `integration`-tagged tests against it, and
 tears it down afterwards. To run the tests against an already-running mock, set
-`LOCALSTACK_ENDPOINT` and invoke `go test -tags=integration ./...` directly.
+`FAKECLOUD_ENDPOINT` and invoke `go test -tags=integration ./...` directly.
 
 ### Health check
 

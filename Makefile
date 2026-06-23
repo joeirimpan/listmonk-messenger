@@ -17,7 +17,7 @@ test:
 	go test ./...
 .PHONY: test
 
-# Run integration tests against a LocalStack mock AWS.
+# Run integration tests against a fakecloud mock AWS.
 COMPOSE := docker compose -f docker-compose.test.yml
 test-integration:
 	$(COMPOSE) up -d --wait

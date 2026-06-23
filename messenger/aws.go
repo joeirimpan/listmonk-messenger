@@ -15,7 +15,7 @@ type awsCfg struct {
 	SecretKey string `json:"secret_key"`
 	Region    string `json:"region"`
 	// Endpoint overrides the AWS service endpoint, e.g. for a VPC endpoint or a
-	// LocalStack mock. Empty uses the real AWS endpoints.
+	// fakecloud mock. Empty uses the real AWS endpoints.
 	Endpoint string `json:"endpoint"`
 
 	// RoleARN, when set, assumes this IAM role via STS and uses the resulting

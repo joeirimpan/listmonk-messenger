@@ -1,17 +1,18 @@
-# LocalStack mock AWS for integration tests.
+# fakecloud mock AWS for integration tests.
 #   docker compose -f docker-compose.test.yml up -d
 #   go test -tags=integration ./messenger/...
 #   docker compose -f docker-compose.test.yml down
 services:
-  localstack:
-    image: localstack/localstack:3
+  fakecloud:
+    image: ghcr.io/faiscadev/fakecloud:latest
     ports:
       - "4566:4566"
     environment:
-      - SERVICES=sts,iam,ses,pinpoint
-      - DEBUG=0
+      - FAKECLOUD_ADDR=0.0.0.0:4566
+      - FAKECLOUD_REGION=us-east-1
+      - FAKECLOUD_LOG=info
     healthcheck:
-      test: ["CMD", "curl", "-sf", "http://localhost:4566/_localstack/health"]
+      test: ["CMD", "fakecloud", "healthcheck"]
       interval: 5s
-      timeout: 5s
+      timeout: 3s
       retries: 12

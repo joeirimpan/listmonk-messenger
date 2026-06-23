@@ -1,8 +1,8 @@
 //go:build integration
 
-// Integration tests for the AWS helpers, run against a LocalStack mock via
+// Integration tests for the AWS helpers, run against a fakecloud mock via
 // `make test-integration`. The endpoint defaults to http://localhost:4566 and
-// can be overridden with LOCALSTACK_ENDPOINT.
+// can be overridden with FAKECLOUD_ENDPOINT.
 package messenger
 
 import (
@@ -22,8 +22,8 @@ const (
 	testSecretKey = "test"
 )
 
-func localstackEndpoint() string {
-	if e := os.Getenv("LOCALSTACK_ENDPOINT"); e != "" {
+func fakecloudEndpoint() string {
+	if e := os.Getenv("FAKECLOUD_ENDPOINT"); e != "" {
 		return e
 	}
 	return "http://localhost:4566"
@@ -34,7 +34,7 @@ func baseCfg() awsCfg {
 		AccessKey: testAccessKey,
 		SecretKey: testSecretKey,
 		Region:    testRegion,
-		Endpoint:  localstackEndpoint(),
+		Endpoint:  fakecloudEndpoint(),
 	}
 }
 
